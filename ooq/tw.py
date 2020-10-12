@@ -22,6 +22,19 @@ ddir = lambda o: [a for a in dir(o) if not a.startswith('_')]
 dddir = lambda o: [a for a in dir(o) if not a.startswith('__')]
 
 with module_not_found_ignore:
+    def disp_wfsr(wf,
+                  sr=44100,
+                  offset_s=None  # for display of x axix ticks only (not implemented yet)
+                  ):
+        try:
+            import matplotlib.pylab as plt
+            from IPython.display import Audio
+            plt.plot(wf)  # TODO: mk x axis ticks be labeled based on time (aligned to whole seconds, or minutes...)
+            return Audio(data=wf, rate=sr)
+        except (ImportError, ModuleNotFoundError):
+            pass
+
+with module_not_found_ignore:
     from py2store import ihead, kvhead, QuickStore, LocalBinaryStore, LocalJsonStore, LocalPickleStore, LocalTextStore
     from py2store import kv_wrap, wrap_kvs, filt_iter, cached_keys
     from py2store.util import lazyprop
